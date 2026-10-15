@@ -9,7 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@neon/config": "^1.9.2",
+    "@neon/env": "^1.6.3",
+    "@neondatabase/serverless": "^1.2.0",
     "clsx": "2.1.1",
+    "dotenv": "^18.0.8",
     "lucide-react": "^1.57.0",
     "react": "19.2.6",
     "react-dom": "19.2.6",
