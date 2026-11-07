@@ -13,6 +13,8 @@ export type SectionType =
   | "split"
   | "info"
   | "steps"
+  | "journey"
+  | "roomRail"
   | "gallery"
   | "menu"
   | "banner"

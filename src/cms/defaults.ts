@@ -1,6 +1,6 @@
 import { media } from "@/lib/media";
 import { defaultPages } from "./pages";
-import { PRESETS } from "./theme";
+import { MODE_COLORS } from "./theme";
 import type { AgentConfig, FooterSettings, HeaderSettings, SiteContent, SiteSettings, SocialLink, Theme } from "./types";
 
 export const CONTENT_VERSION = 1;
@@ -25,17 +25,38 @@ export const DEFAULT_SITE: SiteSettings = {
 };
 
 export const DEFAULT_THEME: Theme = {
-  colors: { ...PRESETS[0].colors },
-  fonts: { heading: "Newsreader", body: "Hanken Grotesk", headingWeight: 400, headingScale: 1, bodyScale: 1, headingUppercase: false },
-  buttons: { shape: "square", uppercase: true, tracking: 0.14, weight: 600, size: "md", primary: "", primaryText: "", shadow: false },
-  layout: { container: 1320, spacing: 1, imageRadius: 0, animations: true },
+  colors: { ...MODE_COLORS.light },
+  fonts: {
+    heading: "Instrument Serif",
+    body: "Hanken Grotesk",
+    headingWeight: 400,
+    headingScale: 1,
+    bodyScale: 1,
+    headingUppercase: false,
+  },
+  buttons: {
+    shape: "square",
+    uppercase: true,
+    tracking: 0.16,
+    weight: 500,
+    size: "md",
+    primary: "",
+    primaryText: "",
+    shadow: false,
+  },
+  layout: {
+    container: 1440,
+    spacing: 1,
+    imageRadius: 0,
+    animations: true,
+  },
 };
 
 export const DEFAULT_HEADER: HeaderSettings = {
   logo: media.logo,
   showLogoImage: true,
   title: "Cayo Coco",
-  subtitle: "Island Glamping",
+  subtitle: "11°29′N · Linapacan",
   nav: [
     { label: "The Experience", url: "#/" },
     { label: "Accommodation", url: "#/accommodations" },

@@ -73,13 +73,13 @@ export const buttons = (key = "buttons", label = "Buttons") =>
   list(key, label, BUTTON_FIELDS, { itemTitle: "label", addLabel: "Add button", newItem: () => ({ label: "New button", url: "#/", variant: "primary" }) });
 
 const infoItems = (key = "items", label = "Info list", withIcon = false) =>
-  list(key, label, [...(withIcon ? [icon("icon", "Icon")] : []), text("title", "Title"), textarea("text", "Text", 3, { help: MD_HELP })], {
+  list(key, label, [...(withIcon ? [icon("icon", "Icon")] : []), text("title", "Title"), textarea("text", "Text", 3, { help: MD_HELP }), image("image", "Hover / tap photo (optional)")], {
     itemTitle: "title",
     addLabel: "Add item",
     newItem: () => ({ title: "New item", text: "Describe it here." }),
   });
 
-export const ITEM_STYLES: Opt[] = [o("list", "Lines — hairline rows"), o("cards", "Cards — raised tiles"), o("numbered", "Numbered rows")];
+export const ITEM_STYLES: Opt[] = [o("list", "Lines — hairline rows"), o("cards", "Cards — raised tiles"), o("numbered", "Numbered rows"), o("cursorReveal", "Expedition rows — giant numerals + cursor photo reveal")];
 export const RATIOS: Opt[] = [o("1 / 1", "Square"), o("4 / 5", "Portrait 4:5"), o("3 / 4", "Portrait 3:4"), o("2 / 3", "Tall 2:3"), o("3 / 2", "Landscape 3:2"), o("4 / 3", "Landscape 4:3"), o("16 / 9", "Wide 16:9")];
 export const TONES: Opt[] = [o("ivory", "Ivory"), o("shell", "Sand"), o("espresso", "Espresso (dark)"), o("deep", "Deep espresso (dark)"), o("forest", "Forest (dark)")];
 const SPACINGS: Opt[] = [o("normal", "Normal"), o("compact", "Compact"), o("flush", "No space above")];
@@ -105,11 +105,13 @@ const sideOpts = [o("left", "Left"), o("right", "Right")];
 export const SECTION_TYPES: Record<SectionType, SectionDef> = {
   hero: {
     label: "Hero photo",
-    description: "Full-width photograph with headline, intro, buttons and a highlights strip.",
+    description: "Full-bleed expedition hero with slow-zoom photo or video loop, split display headline, coordinates & highlights.",
     icon: "Sunrise",
     dark: true,
     fields: [
-      image("image", "Background photo"),
+      image("image", "Background photo (also used as video poster)"),
+      url("videoUrl", "Background video URL (optional MP4/WebM)", { help: "Loops silently behind the headline; falls back to the background photo." }),
+      text("coordinates", "Coordinates / telemetry label (optional)", { placeholder: "11°29′14″N · 119°52′08″E" }),
       text("eyebrow", "Eyebrow"),
       textarea("title", "Headline", 2),
       textarea("lead", "Intro", 3),
@@ -118,7 +120,7 @@ export const SECTION_TYPES: Record<SectionType, SectionDef> = {
       range("overlay", "Darken photo", 0, 90, 5, "%"),
       list("stats", "Highlights strip", [text("label", "Label"), text("value", "Text")], { itemTitle: "label", addLabel: "Add highlight", newItem: () => ({ label: "Label", value: "Text" }) }),
     ],
-    create: () => ({ image: media.lagoonAerial, eyebrow: "Cayo Coco", title: "A new headline", lead: "A short introduction to this page.", buttons: [{ label: "Book Now", url: "{booking}", variant: "light" }], size: "large", overlay: 45, stats: [] }),
+    create: () => ({ image: media.lagoonAerial, eyebrow: "Cayo Coco", title: "A new headline", lead: "A short introduction to this page.", buttons: [{ label: "Book Now", url: "{booking}", variant: "primary" }], size: "large", overlay: 45, stats: [] }),
   },
   pageHeader: {
     label: "Page title",
@@ -146,7 +148,7 @@ export const SECTION_TYPES: Record<SectionType, SectionDef> = {
       list("links", "Arrow links", [text("label", "Label"), text("note", "Note"), url("url", "Link")], { itemTitle: "label", addLabel: "Add link", newItem: () => ({ label: "Link", note: "", url: "#/" }) }),
       buttons(),
       heading("Media"),
-      select("mediaLayout", "Media layout", [o("single", "Single photo"), o("pair", "Two photos"), o("overlap", "Overlapping photos"), o("grid", "Photo grid with lightbox"), o("video", "YouTube video"), o("map", "Google map"), o("none", "No media")]),
+      select("mediaLayout", "Media layout", [o("single", "Single photo"), o("pair", "Two photos"), o("overlap", "Overlapping photos"), o("collage", "Asymmetric parallax collage (3 photos)"), o("grid", "Photo grid with lightbox"), o("video", "YouTube video"), o("map", "Google map"), o("none", "No media")]),
       images("images", "Photos", { when: (d) => !["video", "map", "none"].includes(d.mediaLayout) }),
       text("caption", "Caption", { when: (d) => ["single", "pair"].includes(d.mediaLayout) }),
       select("ratio", "Photo shape", RATIOS, { when: (d) => ["single", "grid"].includes(d.mediaLayout) }),
@@ -170,7 +172,7 @@ export const SECTION_TYPES: Record<SectionType, SectionDef> = {
       textarea("title", "Title", 2),
       textarea("intro", "Intro", 3),
       buttons(),
-      list("groups", "Groups", [text("title", "Group label"), infoItems("items", "Items", true)], { itemTitle: "title", addLabel: "Add group", newItem: () => ({ title: "", items: [{ title: "New item", text: "" }] }) }),
+      list("groups", "Groups", [text("title", "Group label"), toggle("menuBlock", "Style group as Island Bar menu card"), infoItems("items", "Items", true)], { itemTitle: "title", addLabel: "Add group", newItem: () => ({ title: "", items: [{ title: "New item", text: "" }] }) }),
       select("layout", "Layout", [o("side", "Heading left, items right"), o("stacked", "Heading above items")]),
       select("columns", "Columns", [o("1", "1"), o("2", "2"), o("3", "3"), o("4", "4")], { num: true }),
       select("style", "Item style", ITEM_STYLES),
@@ -187,8 +189,8 @@ export const SECTION_TYPES: Record<SectionType, SectionDef> = {
       text("eyebrow", "Eyebrow"),
       textarea("title", "Title", 2),
       textarea("lead", "Intro", 3),
-      list("steps", "Steps", [text("title", "Title"), textarea("text", "Text", 3)], { itemTitle: "title", addLabel: "Add step", newItem: () => ({ title: "Step", text: "" }) }),
-      list("facts", "Key facts", [icon("icon", "Icon"), text("title", "Title"), textarea("text", "Text", 2)], { itemTitle: "title", addLabel: "Add fact", newItem: () => ({ icon: "Clock", title: "Fact", text: "" }) }),
+      list("steps", "Steps", [text("title", "Title"), text("leg", "Leg label (optional)", { placeholder: "e.g. EL NIDO · TOWNSQUARE" }), text("coords", "Coordinates (optional)", { placeholder: "e.g. 11°10′N · 119°23′E" }), textarea("text", "Text", 3), image("image", "Waypoint photo (optional)")], { itemTitle: "title", addLabel: "Add step", newItem: () => ({ title: "Step", text: "" }) }),
+      list("facts", "Key facts", [icon("icon", "Icon"), text("stat", "Big numeral (optional)", { placeholder: "e.g. 1.5–2h or 10:30" }), text("title", "Title"), textarea("text", "Text", 2)], { itemTitle: "title", addLabel: "Add fact", newItem: () => ({ icon: "Clock", stat: "", title: "Fact", text: "" }) }),
       list("maps", "Maps", [text("query", "Location (Google Maps search)"), text("caption", "Caption")], { itemTitle: "caption", addLabel: "Add map", newItem: () => ({ query: "Cayo Coco Island Glamping", caption: "Cayo Coco" }) }),
       toggle("contactBox", "Show WhatsApp & email box"),
       text("contactText", "Contact box text", { when: (d) => d.contactBox }),
@@ -197,6 +199,145 @@ export const SECTION_TYPES: Record<SectionType, SectionDef> = {
       select("layout", "Layout", [o("side", "Map beside text"), o("stacked", "Everything stacked")]),
     ],
     create: () => ({ eyebrow: "Getting here", title: "How to get here", lead: "", steps: [{ title: "First step", text: "" }], facts: [], maps: [{ query: "Cayo Coco Island Glamping", caption: "Cayo Coco, Linapacan" }], contactBox: true, contactText: "Arrange your transfer directly with our team:", contactMessage: "Hello! I'd like to arrange my transfer to Cayo Coco.", buttons: [], layout: "side" }),
+  },
+  journey: {
+    label: "Expedition route (pinned)",
+    description: "Pinned scroll journey drawing an animated dotted boat route (El Nido → rice fields → Linapacan) with big numerals, dark map & transfer CTA.",
+    icon: "Compass",
+    fields: [
+      text("eyebrow", "Eyebrow"),
+      textarea("title", "Headline", 2),
+      textarea("lead", "Intro", 3),
+      list(
+        "steps",
+        "Route waypoints",
+        [
+          text("title", "Waypoint title"),
+          text("leg", "Place / mode tag", { placeholder: "e.g. EL NIDO · OVERLAND" }),
+          text("coords", "Coordinates", { placeholder: "e.g. 11°10′N · 119°23′E" }),
+          textarea("text", "Description", 3),
+          image("image", "Waypoint photo (optional)"),
+        ],
+        {
+          itemTitle: "title",
+          addLabel: "Add waypoint",
+          newItem: () => ({ title: "New waypoint", leg: "WAYPOINT", coords: "11°20′N · 119°40′E", text: "" }),
+        },
+      ),
+      list(
+        "facts",
+        "Big numeral facts",
+        [
+          icon("icon", "Icon"),
+          text("stat", "Big numeral", { placeholder: "e.g. 1.5–2h or 10:30" }),
+          text("title", "Label"),
+          textarea("text", "Details", 2),
+        ],
+        {
+          itemTitle: "title",
+          addLabel: "Add numeral fact",
+          newItem: () => ({ icon: "Clock", stat: "2h", title: "Travel time", text: "" }),
+        },
+      ),
+      list("maps", "Nautical map frames", [text("query", "Location (Google Maps search)"), text("caption", "Caption")], {
+        itemTitle: "caption",
+        addLabel: "Add map",
+        newItem: () => ({ query: "Cayo Coco Resort, Barangonan, linapacan", caption: "Cayo Coco — Barangonan Island, Linapacan" }),
+      }),
+      toggle("contactBox", "Show WhatsApp & email transfer strip"),
+      text("contactText", "Transfer strip heading", { when: (d) => d.contactBox }),
+      text("contactMessage", "Pre-filled WhatsApp message", { when: (d) => d.contactBox }),
+      buttons(),
+    ],
+    create: () => ({
+      eyebrow: "Getting here",
+      title: "How to get here",
+      lead: "If you have booked with a private charter, you will arrive with your own boat. For guests booking directly, the journey begins in El Nido.",
+      steps: [
+        { title: "Collected in El Nido", leg: "EL NIDO · TOWNSQUARE", coords: "11°10′N · 119°23′E", text: "A taxi collects you from El Nido Townsquare.", image: media.townSquare },
+        { title: "Through the rice fields", leg: "SAN FERNANDO · DIPNAY", coords: "11°16′N · 119°32′E", text: "Driven through rice fields and coastal hills to San Fernando Dipnay port.", image: media.beachAerial },
+        { title: "By boat to Linapacan", leg: "BARANGONAN · CAYO COCO", coords: "11°29′N · 119°52′E", text: "An island crossing across emerald waters to Cayo Coco.", image: media.lagoonAerial },
+      ],
+      facts: [
+        { icon: "Clock", stat: "1.5–2h", title: "Total travel time", text: "1.5 to 2 hours, depending on the weather." },
+        { icon: "MapPin", stat: "10:30", title: "Pick-up", text: "10:30 at TownSquare, El Nido (not the port area)." },
+      ],
+      maps: [{ query: "Cayo Coco Resort, Barangonan, linapacan", caption: "Cayo Coco — Barangonan Island, Linapacan, Palawan" }],
+      contactBox: true,
+      contactText: "Arrange your transfer directly with our team:",
+      contactMessage: "Hello! I'd like to arrange my transfer to Cayo Coco.",
+      buttons: [],
+    }),
+  },
+  roomRail: {
+    label: "Rooms rail (horizontal)",
+    description: "Horizontal pinned scroll rail on desktop and touch swipe carousel on mobile, with giant overlapping type, specs drawer & per-room booking.",
+    icon: "Home",
+    defaultTone: "shell",
+    fields: [
+      heading("Introduction"),
+      text("eyebrow", "Eyebrow"),
+      textarea("title", "Headline", 2),
+      textarea("lead", "Lead paragraph", 3),
+      textarea("body", "Philosophy note", 3, { help: MD_HELP }),
+      buttons("buttons", "Intro buttons"),
+      heading("Room panels"),
+      list(
+        "rooms",
+        "Rooms",
+        [
+          text("name", "Room name"),
+          text("badge", "Category tag", { placeholder: "e.g. BEACHFRONT · PRIVATE BATHROOM" }),
+          text("tagline", "Short subtitle"),
+          textarea("description", "Description", 3),
+          image("image", "Main room photo"),
+          image("secondaryImage", "Detail / interior photo (optional)"),
+          strings("specs", "Room specs (shown on hover / tap)", { addLabel: "Add spec" }),
+          text("bookLabel", "Booking button label"),
+          url("bookUrl", "Booking link"),
+          text("detailLabel", "Details link label"),
+          url("detailUrl", "Details link"),
+        ],
+        {
+          itemTitle: "name",
+          addLabel: "Add room",
+          newItem: () => ({
+            name: "New Room",
+            badge: "ISLAND SANCTUARY",
+            tagline: "Crafted with bamboo and ocean air",
+            description: "",
+            image: media.oceanSuite1,
+            specs: ["Custom king size bed with mosquito net", "Natural sea-breeze ventilation & fan"],
+            bookLabel: "Check availability",
+            bookUrl: "{booking}",
+            detailLabel: "Explore room",
+            detailUrl: "#/accommodations",
+          }),
+        },
+      ),
+    ],
+    create: () => ({
+      eyebrow: "Rooms",
+      title: "Designed with nature",
+      lead: "The cottages at Cayo Coco were designed for you to have a private retreat and fully relax in their intimate ambiance.",
+      body: "Better sleep, clearer breathing and a calmer mind: we have replaced air-conditioning with fresh ocean air flowing through the room, and a fan to cool further when needed.",
+      buttons: [{ label: "Discover accommodation", url: "#/accommodations", variant: "outline" }],
+      rooms: [
+        {
+          name: "Ocean Suite",
+          badge: "BEACHFRONT · ENSUITE",
+          tagline: "Private bathroom and the sound of the waves",
+          description: "Our most popular sanctuary steps from the cove, with 40 sqm of semi-open-air space and ocean breeze.",
+          image: media.oceanSuite1,
+          secondaryImage: media.oceanSuite3,
+          specs: ["40 sqm semi-open-air room", "Custom king size bed with mosquito net", "Sofa bed (extra guest option)", "Private shower & toilet"],
+          bookLabel: "Check availability",
+          bookUrl: "{booking}",
+          detailLabel: "Suite details",
+          detailUrl: "#/accommodations?s=ocean-suite",
+        },
+      ],
+    }),
   },
   gallery: {
     label: "Photo gallery",
@@ -211,6 +352,7 @@ export const SECTION_TYPES: Record<SectionType, SectionDef> = {
       select("columns", "Columns", [o("2", "2"), o("3", "3"), o("4", "4")], { num: true }),
       select("ratio", "Photo shape", RATIOS),
       toggle("compact", "Compact heading"),
+      toggle("masonry", "Masonry editorial layout"),
       toggle("instagram", "Use live Instagram feed when available", { help: "Requires VITE_INSTAGRAM_FEED_URL at build time; these photos are the fallback." }),
     ],
     create: () => ({ eyebrow: "", title: "Gallery", intro: "", buttons: [], images: [media.friends, media.coupleCocktails, media.bonfire], columns: 3, ratio: "1 / 1", compact: false, instagram: false }),
@@ -250,7 +392,7 @@ export const SECTION_TYPES: Record<SectionType, SectionDef> = {
       select("size", "Height", [o("large", "Large"), o("medium", "Medium")]),
       range("overlay", "Darken photo", 0, 95, 5, "%"),
     ],
-    create: () => ({ image: media.beachDinnerSea, eyebrow: "Cayo Coco", title: "Ready to start your island adventure?", body: "", note: "", buttons: [{ label: "Book Now", url: "{booking}", variant: "light" }], align: "center", size: "medium", overlay: 65 }),
+    create: () => ({ image: media.beachDinnerSea, eyebrow: "Cayo Coco", title: "Ready to start your island adventure?", body: "", note: "", buttons: [{ label: "Book Now", url: "{booking}", variant: "primary" }], align: "center", size: "medium", overlay: 65 }),
   },
   inquiry: {
     label: "Inquiry form",
@@ -365,6 +507,7 @@ export const SECTION_TYPES: Record<SectionType, SectionDef> = {
       textarea("title", "Title", 2),
       textarea("lead", "Intro", 3),
       list("lists", "Lists", [text("title", "Title"), strings("items", "Lines")], { itemTitle: "title", addLabel: "Add list", newItem: () => ({ title: "List", items: [] }) }),
+      list("strips", "Accordion strips", [text("title", "Strip title"), text("tag", "Tag (e.g. Included / At extra cost)"), textarea("text", "Description", 2), image("image", "Strip photo"), url("url", "Link (optional)")], { itemTitle: "title", addLabel: "Add strip", newItem: () => ({ title: "New experience", tag: "Included", text: "", image: media.lagoonSwim, url: "#/activities" }) }),
       images("images", "Photos (add captions)", { captions: true }),
       buttons(),
     ],

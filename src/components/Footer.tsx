@@ -5,9 +5,9 @@ import { Icon } from "@/cms/icons";
 import { whatsappLink } from "@/cms/links";
 import { ContactForm, NewsletterForm } from "./Forms";
 import { SmartLink } from "./SmartLink";
-import { Container, Logo } from "./ui";
+import { Container, Logo, PassportStamp, WaveDivider, usePalawanClock } from "./ui";
 
-const socialCls = "grid size-11 place-items-center rounded-full border border-ivory/25 text-ivory transition-colors hover:border-ivory hover:bg-ivory hover:text-espresso-deep";
+const socialCls = "grid size-11 place-items-center rounded-full border border-ivory/25 text-ivory transition-colors hover:border-forest hover:bg-forest hover:text-[var(--btn-primary-fg)]";
 
 export function Footer() {
   const { content } = useCms();
@@ -15,6 +15,7 @@ export function Footer() {
   const admin = useAdmin();
   const columns = footer.columns.filter((c) => c.title || c.links.length);
   const copyright = footer.copyright.split("{year}").join(String(new Date().getFullYear()));
+  const clock = usePalawanClock();
   return (
     <footer data-fab-hide className="on-dark relative bg-espresso-deep text-ivory" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
@@ -25,7 +26,12 @@ export function Footer() {
           <PanelBottom className="size-3.5" /> Edit footer
         </button>
       ) : null}
-      <Container className="pt-16 md:pt-20">
+      <WaveDivider className="text-ivory/25" />
+      <Container className="pt-14 md:pt-16">
+        <div className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-ivory/10 pb-6">
+          <PassportStamp label="BARANGONAN · LINAPACAN" sub="11°29′N · 119°52′E" />
+          <p className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-ivory/60">Palawan · <span className="tnum text-sand">{clock.time}</span> · {clock.phase}</p>
+        </div>
         <div className="grid gap-12 border-b border-ivory/10 pb-14 lg:grid-cols-12 lg:gap-10">
           <div className={footer.contactForm.show ? "lg:col-span-4" : "lg:col-span-12"}>
             <Logo light />
@@ -36,7 +42,7 @@ export function Footer() {
                   <div>
                     <dt className="text-eyebrow font-semibold uppercase text-sand">Enquiries</dt>
                     <dd className="mt-1.5">
-                      <a href={`mailto:${site.email}`} className="underline-offset-4 hover:underline">
+                      <a href={`mailto:${site.email}`} className="border-b border-ivory/30 pb-0.5 transition-colors hover:border-forest hover:text-sand">
                         {site.email}
                       </a>
                     </dd>
@@ -46,7 +52,7 @@ export function Footer() {
                   <div>
                     <dt className="text-eyebrow font-semibold uppercase text-sand">WhatsApp</dt>
                     <dd className="mt-1.5">
-                      <a href={whatsappLink(site)} target="_blank" rel="noopener noreferrer" className="underline-offset-4 hover:underline">
+                      <a href={whatsappLink(site)} className="border-b border-ivory/30 pb-0.5 transition-colors hover:border-forest hover:text-sand">
                         {site.whatsappDisplay || site.whatsappNumber}
                       </a>
                       <span className="mt-1 block text-sm text-ivory/60">There is no phone signal on the island — WhatsApp is the best way to reach us.</span>
@@ -115,6 +121,7 @@ export function Footer() {
           ) : null}
         </div>
       </Container>
+      <div aria-hidden className="overflow-hidden px-2 pt-4"><p className="whitespace-nowrap text-center font-serif leading-[0.8] tracking-[-0.03em] text-ivory/[0.13]" style={{fontSize:"clamp(4rem,14.5vw,13rem)"}}>CAYO COCO</p></div>
       <div className="border-t border-ivory/10">
         <Container className="flex flex-col gap-3 py-6 pb-24 text-sm text-ivory/60 sm:pb-6 md:flex-row md:items-center md:justify-between">
           <p>{copyright}</p>

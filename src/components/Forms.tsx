@@ -9,19 +9,19 @@ import { buttonClass } from "./ui";
 
 type Errors = Partial<Record<string, string>>;
 
-const inputBase = "block w-full min-h-12 rounded-[2px] border px-4 py-3 text-base leading-snug transition-colors focus:outline-none focus:ring-2";
+const inputBase = "block w-full min-h-12 border-0 border-b bg-transparent px-1 py-3 text-base leading-snug transition-colors focus:outline-none";
 const inputTone = {
-  light: "border-stone bg-white/80 text-ink placeholder:text-muted/70 focus:border-forest focus:bg-white focus:ring-forest/25 aria-[invalid=true]:border-clay",
-  dark: "border-ivory/25 bg-ivory/[0.06] text-ivory placeholder:text-ivory/45 focus:border-sand focus:ring-sand/30 aria-[invalid=true]:border-[#f2b49b] [color-scheme:dark]",
+  light: "border-line text-ink placeholder:text-muted/60 focus:border-forest aria-[invalid=true]:border-clay",
+  dark: "border-ivory/25 text-ivory placeholder:text-ivory/45 focus:border-sand aria-[invalid=true]:border-clay [color-scheme:dark]",
 };
 
 function Field({ id, label, required, error, hint, dark, hideOptional, children }: { id: string; label: string; required?: boolean; error?: string; hint?: string; dark?: boolean; hideOptional?: boolean; children: ReactNode }) {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className={cn("text-[0.9375rem] font-medium", dark ? "text-ivory" : "text-ink")}>
+      <label htmlFor={id} className={cn("font-mono text-[0.7rem] font-medium uppercase tracking-[0.18em]", dark ? "text-sand" : "text-bark")}>
         {label}
         {required ? (
-          <span className={cn("ml-0.5", dark ? "text-[#f2b49b]" : "text-clay")} aria-hidden>
+          <span className="ml-0.5 text-clay" aria-hidden>
             *
           </span>
         ) : hideOptional ? null : (
@@ -35,7 +35,7 @@ function Field({ id, label, required, error, hint, dark, hideOptional, children 
         </p>
       ) : null}
       {error ? (
-        <p id={`${id}-error`} className={cn("flex items-start gap-1.5 text-sm font-medium", dark ? "text-[#f2b49b]" : "text-clay")}>
+        <p id={`${id}-error`} className={cn("flex items-start gap-1.5 text-sm font-medium", dark ? "text-clay" : "text-clay")}>
           <CircleAlert className="mt-0.5 size-4 shrink-0" aria-hidden />
           {error}
         </p>
@@ -60,7 +60,7 @@ function Honeypot() {
 function RequiredNote({ dark }: { dark?: boolean }) {
   return (
     <p className={cn("text-sm", dark ? "text-ivory/65" : "text-muted")}>
-      Fields marked <span className={dark ? "text-[#f2b49b]" : "text-clay"}>*</span> are required.
+      Fields marked <span className={dark ? "text-clay" : "text-clay"}>*</span> are required.
     </p>
   );
 }
@@ -92,7 +92,7 @@ export function FormStatus({ outcome, dark, sentText }: { outcome: SubmitOutcome
             {site.email}
           </a>{" "}
           or{" "}
-          <a className={link} href={whatsappLink(site)} target="_blank" rel="noopener noreferrer">
+          <a className={link} href={whatsappLink(site)}>
             message us on WhatsApp
           </a>
           .
@@ -100,15 +100,15 @@ export function FormStatus({ outcome, dark, sentText }: { outcome: SubmitOutcome
       </div>
     );
   return (
-    <div role="alert" className={cn(box, dark ? "border-[#f2b49b]/50 bg-[#f2b49b]/10 text-ivory" : "border-clay/40 bg-clay/[0.06] text-ink")}>
-      <CircleAlert className={cn("mt-0.5 size-5 shrink-0", dark ? "text-[#f2b49b]" : "text-clay")} aria-hidden />
+    <div role="alert" className={cn(box, dark ? "border-clay/50 bg-clay/10 text-ivory" : "border-clay/40 bg-clay/[0.06] text-ink")}>
+      <CircleAlert className={cn("mt-0.5 size-5 shrink-0", dark ? "text-clay" : "text-clay")} aria-hidden />
       <p>
         <strong className="font-semibold">Sorry — your message was not sent.</strong> {outcome.message} Please try again,{" "}
         <a className={link} href={outcome.mailto}>
           send it by email
         </a>{" "}
         or{" "}
-        <a className={link} href={whatsappLink(site)} target="_blank" rel="noopener noreferrer">
+        <a className={link} href={whatsappLink(site)}>
           contact us on WhatsApp
         </a>
         .
@@ -257,7 +257,7 @@ export function InquiryForm({ idPrefix = "inquiry" }: { idPrefix?: string }) {
         <input {...f.bind("name")} type="text" autoComplete="name" required aria-describedby={describedBy(`${idPrefix}-name`, e.name)} className={cn(inputBase, inputTone.light)} />
       </Field>
       <fieldset className="grid gap-5 sm:grid-cols-2">
-        <legend className="mb-3 text-[0.9375rem] font-medium text-ink">
+        <legend className="mb-3 font-mono text-[0.7rem] font-medium uppercase tracking-[0.18em] text-bark">
           Dates of travel <span className="ml-1.5 text-sm font-normal text-muted">(optional)</span>
         </legend>
         <Field id={`${idPrefix}-arrival`} label="Arrival" hideOptional>
@@ -269,7 +269,7 @@ export function InquiryForm({ idPrefix = "inquiry" }: { idPrefix?: string }) {
       </fieldset>
       {roomOptions.length ? (
         <fieldset>
-          <legend className="mb-3 text-[0.9375rem] font-medium text-ink">
+          <legend className="mb-3 font-mono text-[0.7rem] font-medium uppercase tracking-[0.18em] text-bark">
             Type of accommodation <span className="ml-1.5 text-sm font-normal text-muted">(optional — choose any)</span>
           </legend>
           <div className="grid gap-2.5">
@@ -277,7 +277,7 @@ export function InquiryForm({ idPrefix = "inquiry" }: { idPrefix?: string }) {
               const id = `${idPrefix}-room-${i}`;
               const checked = rooms.includes(room);
               return (
-                <label key={room} htmlFor={id} className={cn("flex min-h-12 cursor-pointer items-center gap-3 rounded-[2px] border px-4 py-3 text-[0.9375rem] transition-colors", checked ? "border-forest bg-forest/[0.06]" : "border-stone bg-white/60 hover:border-ink/40")}>
+                <label key={room} htmlFor={id} className={cn("flex min-h-12 cursor-pointer items-center gap-3 rounded-[2px] border px-4 py-3 text-[0.9375rem] transition-colors", checked ? "border-forest bg-forest/[0.06]" : "border-line bg-shell/50 hover:border-forest")}>
                   <input id={id} type="checkbox" checked={checked} onChange={() => toggleRoom(room)} className="size-4 shrink-0 accent-forest" />
                   {room}
                 </label>

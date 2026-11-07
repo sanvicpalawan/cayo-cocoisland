@@ -11,12 +11,14 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { SectionView } from "@/components/sections";
 import { Buttons, Container, Eyebrow } from "@/components/ui";
+import { ModeProvider, useSiteMode } from "@/lib/mode";
 import { RouterProvider, useRoute, useRouteEffects } from "@/lib/router";
 import { useMeta } from "@/lib/useMeta";
 
 function ThemeApplier() {
   const { content } = useCms();
-  useEffect(() => applyTheme(content.theme), [content.theme]);
+  const { mode } = useSiteMode();
+  useEffect(() => applyTheme(content.theme, mode), [content.theme, mode]);
   return null;
 }
 
@@ -107,7 +109,9 @@ export default function App({ initial, source }: { initial: SiteContent; source:
     <CmsProvider initial={initial} source={source}>
       <RouterProvider>
         <AdminProvider>
-          <Shell />
+          <ModeProvider>
+            <Shell />
+          </ModeProvider>
         </AdminProvider>
       </RouterProvider>
     </CmsProvider>

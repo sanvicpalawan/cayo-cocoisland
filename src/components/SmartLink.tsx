@@ -18,6 +18,7 @@ export function SmartLink({
   ariaLabel,
   ariaCurrent,
   onClick,
+  "data-cursor": dataCursor,
 }: {
   url?: string;
   className?: string;
@@ -26,9 +27,12 @@ export function SmartLink({
   ariaLabel?: string;
   ariaCurrent?: "page";
   onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
+  "data-cursor"?: string;
 }) {
   const r = useResolvedUrl(url);
-  const tab = newTab ?? r.external;
+  // Booking & WhatsApp open in the same tab: preview frames block pop-up tabs,
+  // and booking engines / WhatsApp are normally visited full-page anyway.
+  const tab = newTab ?? (r.external && r.kind !== "booking" && r.kind !== "whatsapp");
   const handle = (e: MouseEvent<HTMLAnchorElement>) => {
     onClick?.(e);
     if (e.defaultPrevented || !r.internal || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
@@ -43,6 +47,7 @@ export function SmartLink({
   return (
     <a
       href={r.href}
+      data-cursor={dataCursor}
       className={className}
       aria-label={ariaLabel}
       aria-current={ariaCurrent}

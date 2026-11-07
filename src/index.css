@@ -1,63 +1,153 @@
 @import "tailwindcss";
 
 /* ──────────────────────────────────────────────────────────────
-   Cayo Coco design system. Every token below can be changed live
-   from Admin → Theme (values are overridden on <html>).
+   Self-hosted Latin subset woff2 typefaces (via @fontsource)
+   Zero external CDN calls; only Latin .woff2 files are bundled.
+   ────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url("@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Hanken Grotesk";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2") format("woff2-variations");
+}
+@font-face {
+  font-family: "Hanken Grotesk";
+  font-style: italic;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-italic.woff2") format("woff2-variations");
+}
+@font-face {
+  font-family: "DM Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("@fontsource/dm-mono/files/dm-mono-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "DM Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url("@fontsource/dm-mono/files/dm-mono-latin-500-normal.woff2") format("woff2");
+}
+
+/* ──────────────────────────────────────────────────────────────
+   "THE EDGE OF THE MAP" Design System
+   Every token below is controlled live by Admin → Theme.
    ────────────────────────────────────────────────────────────── */
 @theme {
-  --font-serif: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-serif: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --font-sans: "Hanken Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --color-ivory: #fbf7f0;
-  --color-shell: #f4ece0;
-  --color-sand: #e8dac4;
-  --color-stone: #cdbfa9;
-  --color-line: #e3d7c5;
-  --color-ink: #1f1a15;
-  --color-muted: #5c5248;
-  --color-espresso: #3e2f24;
-  --color-espresso-deep: #2a2019;
-  --color-bark: #4a2c0d;
-  --color-forest: #3d5a47;
-  --color-forest-deep: #2e4537;
-  --color-clay: #9a4a2e;
+  /* Default "Edge of the Map" palette — overridden dynamically on <html> by applyTheme() */
+  --color-ivory: #071418;
+  --color-shell: #0d2128;
+  --color-sand: #e6d3b3;
+  --color-stone: #294750;
+  --color-line: #18313a;
+  --color-ink: #f4ecdc;
+  --color-muted: #9db5b9;
+  --color-espresso: #0b1c22;
+  --color-espresso-deep: #040b0e;
+  --color-bark: #daa86d;
+  --color-forest: #e85d3d;
+  --color-forest-deep: #c24327;
+  --color-clay: #ff7d61;
 
-  --text-display: calc(clamp(2.85rem, 1.55rem + 4.6vw, 6rem) * var(--type-scale, 1));
-  --text-display--line-height: 1;
-  --text-display--letter-spacing: -0.022em;
-  --text-h1: calc(clamp(2.5rem, 1.6rem + 3.1vw, 4.4rem) * var(--type-scale, 1));
-  --text-h1--line-height: 1.04;
+  /* Editorial scale — hero display spans 12–18vw with razor-tight leading */
+  --text-hero: calc(clamp(4.2rem, 13.8vw, 14.5rem) * var(--type-scale, 1));
+  --text-hero--line-height: 0.88;
+  --text-hero--letter-spacing: -0.028em;
+
+  --text-display: calc(clamp(3.15rem, 1.4rem + 5.8vw, 7.2rem) * var(--type-scale, 1));
+  --text-display--line-height: 0.92;
+  --text-display--letter-spacing: -0.024em;
+
+  --text-h1: calc(clamp(2.65rem, 1.55rem + 3.8vw, 5.1rem) * var(--type-scale, 1));
+  --text-h1--line-height: 0.96;
   --text-h1--letter-spacing: -0.02em;
-  --text-h2: calc(clamp(2.05rem, 1.5rem + 2vw, 3.35rem) * var(--type-scale, 1));
-  --text-h2--line-height: 1.08;
-  --text-h2--letter-spacing: -0.015em;
-  --text-h3: calc(clamp(1.5rem, 1.28rem + 0.8vw, 1.95rem) * var(--type-scale, 1));
-  --text-h3--line-height: 1.18;
-  --text-h4: calc(1.3rem * var(--type-scale, 1));
-  --text-h4--line-height: 1.3;
-  --text-lead: calc(clamp(1.125rem, 1.06rem + 0.3vw, 1.3rem) * var(--body-scale, 1));
+
+  --text-h2: calc(clamp(2.2rem, 1.45rem + 2.6vw, 4rem) * var(--type-scale, 1));
+  --text-h2--line-height: 0.98;
+  --text-h2--letter-spacing: -0.018em;
+
+  --text-h3: calc(clamp(1.6rem, 1.3rem + 1vw, 2.25rem) * var(--type-scale, 1));
+  --text-h3--line-height: 1.1;
+
+  --text-h4: calc(1.375rem * var(--type-scale, 1));
+  --text-h4--line-height: 1.22;
+
+  --text-lead: calc(clamp(1.1rem, 1.04rem + 0.32vw, 1.28rem) * var(--body-scale, 1));
   --text-lead--line-height: 1.62;
-  --text-body: 1.0625rem;
-  --text-body--line-height: 1.7;
-  --text-eyebrow: 0.75rem;
+
+  --text-body: 1.03125rem;
+  --text-body--line-height: 1.68;
+
+  --text-eyebrow: 0.71875rem;
   --text-eyebrow--line-height: 1.3;
   --text-eyebrow--letter-spacing: 0.22em;
 
-  --ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
-  --animate-hero-in: hero-in 1.8s var(--ease-soft) both;
-  --animate-fade-up: fade-up 0.9s var(--ease-soft) both;
+  /* Single easing family: power3 / expo (no bounce) */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-hero-in: hero-in 1.6s var(--ease-expo) both;
+  --animate-fade-up: fade-up 0.95s var(--ease-soft) both;
+}
+
+:root {
+  --fg-on-dark: var(--color-ink);
+  --fg-on-light: var(--color-ivory);
+  --atmo-bg: var(--color-ivory);
+  --atmo-surface: var(--color-shell);
+  --atmo-glow: color-mix(in oklab, var(--color-bark) 30%, transparent);
+}
+
+/* Scroll-driven atmospheric chapters: Dawn → Noon → Golden Hour → Night
+   Purely computed from active Theme CSS variables so live re-theming always works. */
+html[data-atmo="dawn"] {
+  --atmo-bg: var(--color-ivory);
+  --atmo-surface: var(--color-shell);
+  --atmo-glow: color-mix(in oklab, var(--color-bark) 26%, transparent);
+}
+html[data-atmo="noon"] {
+  --atmo-bg: color-mix(in oklab, var(--color-ivory) 82%, var(--color-stone) 18%);
+  --atmo-surface: color-mix(in oklab, var(--color-shell) 80%, var(--color-stone) 20%);
+  --atmo-glow: color-mix(in oklab, var(--color-sand) 24%, transparent);
+}
+html[data-atmo="golden"] {
+  --atmo-bg: color-mix(in oklab, var(--color-espresso) 86%, var(--color-forest) 14%);
+  --atmo-surface: color-mix(in oklab, var(--color-shell) 84%, var(--color-bark) 16%);
+  --atmo-glow: color-mix(in oklab, var(--color-forest) 32%, transparent);
+}
+html[data-atmo="night"] {
+  --atmo-bg: var(--color-espresso-deep);
+  --atmo-surface: color-mix(in oklab, var(--color-espresso-deep) 78%, var(--color-espresso) 22%);
+  --atmo-glow: color-mix(in oklab, var(--color-forest) 22%, transparent);
 }
 
 @keyframes hero-in {
-  from { transform: scale(1.06); }
+  from { transform: scale(1.08); }
   to { transform: scale(1); }
 }
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(18px); }
-  to { opacity: 1; transform: none; }
-}
-@keyframes reveal-up {
-  from { opacity: 0; transform: translateY(26px); }
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: none; }
 }
 @keyframes typing {
@@ -69,6 +159,21 @@
   to { opacity: 1; transform: none; }
 }
 
+/* Lenis smooth-scroll housekeeping */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
@@ -76,17 +181,20 @@
     scroll-padding-top: 5.5rem;
   }
   body {
-    background: var(--color-ivory);
+    background-color: var(--atmo-bg, var(--color-ivory));
     color: var(--color-ink);
     font-family: var(--font-sans);
-    font-size: calc(1.0625rem * var(--body-scale, 1));
-    line-height: 1.7;
+    font-size: calc(1.03125rem * var(--body-scale, 1));
+    line-height: 1.68;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     overflow-x: clip;
     padding-right: var(--admin-w, 0px);
-    transition: padding-right 0.25s var(--ease-soft);
+    transition:
+      background-color 0.9s var(--ease-soft),
+      color 0.45s var(--ease-soft),
+      padding-right 0.25s var(--ease-soft);
   }
   h1, h2, h3, h4 {
     font-family: var(--font-serif);
@@ -95,16 +203,25 @@
     text-wrap: balance;
   }
   p, li, dd { text-wrap: pretty; }
-  ::selection { background: var(--color-sand); color: var(--color-ink); }
+  ::selection {
+    background: var(--color-forest);
+    color: var(--btn-primary-fg, var(--fg-on-dark));
+  }
   :focus-visible {
     outline: 2px solid var(--color-forest);
     outline-offset: 3px;
     border-radius: 2px;
   }
+  /* Inside dark surfaces (.on-dark), ensure legacy text-ivory / bg-ivory / text-ink classes
+     automatically resolve to WCAG-safe light-on-dark & dark-on-light tokens across all presets. */
+  .on-dark {
+    --color-ivory: var(--fg-on-dark);
+    --color-ink: var(--fg-on-light);
+  }
   .on-dark :focus-visible { outline-color: var(--color-sand); }
   [id] { scroll-margin-top: 5.5rem; }
   input, textarea, select, button { font: inherit; }
-  dialog::backdrop { background: rgb(20 15 11 / 0.9); }
+  dialog::backdrop { background: color-mix(in oklab, var(--color-espresso-deep) 92%, transparent); }
   summary { cursor: pointer; }
   summary::-webkit-details-marker { display: none; }
 }
@@ -112,38 +229,101 @@
 @layer components {
   /* Buttons — shape, case, size and colour come from Admin → Theme → Buttons */
   .btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.6rem;
-    min-height: var(--btn-h, 3rem);
-    padding-inline: var(--btn-px, 1.5rem);
+    gap: 0.65rem;
+    min-height: var(--btn-h, 3.125rem);
+    padding-inline: var(--btn-px, 1.6rem);
     border-radius: var(--btn-radius, 2px);
-    font-size: var(--btn-fs, 0.8125rem);
-    font-weight: var(--btn-weight, 600);
-    letter-spacing: var(--btn-tracking, 0.14em);
+    font-family: var(--font-mono);
+    font-size: var(--btn-fs, 0.78125rem);
+    font-weight: var(--btn-weight, 500);
+    letter-spacing: var(--btn-tracking, 0.16em);
     text-transform: var(--btn-transform, uppercase);
     line-height: 1.1;
     text-align: center;
     box-shadow: var(--btn-shadow, none);
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    transition:
+      background-color 0.35s var(--ease-soft),
+      color 0.35s var(--ease-soft),
+      border-color 0.35s var(--ease-soft),
+      box-shadow 0.35s var(--ease-soft),
+      transform 0.35s var(--ease-soft);
     user-select: none;
   }
   .btn-primary {
     background: var(--btn-primary, var(--color-forest));
-    color: var(--btn-primary-fg, var(--color-ivory));
+    color: var(--btn-primary-fg, var(--fg-on-dark));
   }
-  .btn-primary:hover { background: var(--btn-primary-hover, var(--color-forest-deep)); }
+  .btn-primary:hover {
+    background: var(--btn-primary-hover, var(--color-forest-deep));
+  }
+
+  /* Ensure floating concierge pill (AgentWidget) inherits WCAG-safe primary button foreground */
+  [data-agent] .bg-forest.text-ivory,
+  a.bg-forest.text-ivory {
+    color: var(--btn-primary-fg, var(--fg-on-dark));
+  }
 
   /* Section rhythm — Admin → Theme → Layout → spacing */
-  .sec { padding-block: calc(5rem * var(--space, 1)); }
-  .sec-sm { padding-block: calc(4rem * var(--space, 1)); }
+  .sec { padding-block: calc(5.25rem * var(--space, 1)); }
+  .sec-sm { padding-block: calc(3.75rem * var(--space, 1)); }
   @media (min-width: 48rem) {
-    .sec { padding-block: calc(7rem * var(--space, 1)); }
-    .sec-sm { padding-block: calc(5rem * var(--space, 1)); }
+    .sec { padding-block: calc(7.75rem * var(--space, 1)); }
+    .sec-sm { padding-block: calc(5.25rem * var(--space, 1)); }
   }
 
-  /* Admin interface is isolated from the site theme */
+  /* Subtle tactile film-grain overlay (disabled in admin & reduced motion) */
+  .film-grain {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    opacity: 0.036;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+  /* Designed empty-slot placeholder: lagoon/sunset variable gradient + nautical contours + grain */
+  .expedition-placeholder {
+    background-color: var(--color-shell);
+    background-image:
+      radial-gradient(110% 85% at 82% 18%, color-mix(in oklab, var(--color-forest) 26%, transparent), transparent 62%),
+      radial-gradient(90% 90% at 15% 88%, color-mix(in oklab, var(--color-bark) 24%, transparent), transparent 65%),
+      repeating-radial-gradient(circle at 20% 110%, transparent 0, transparent 28px, color-mix(in oklab, var(--color-stone) 32%, transparent) 29px, transparent 30px),
+      linear-gradient(155deg, var(--color-espresso-deep) 0%, var(--color-shell) 58%, color-mix(in oklab, var(--color-stone) 55%, var(--color-shell)) 100%);
+  }
+
+  /* Public form inputs: architectural underline styling using theme tokens (never touches .admin-ui) */
+  :where(main, footer) form :where(input:not([type="checkbox"]):not([type="radio"]), textarea, select) {
+    background-color: transparent;
+    color: currentColor;
+    border-radius: 0;
+    border-width: 0 0 1px 0;
+    border-color: color-mix(in oklab, currentColor 28%, var(--color-stone));
+    padding-inline: 0.15rem;
+    box-shadow: none;
+    transition: border-color 0.35s var(--ease-soft);
+  }
+  :where(main, footer) form :where(input:not([type="checkbox"]):not([type="radio"]), textarea, select)::placeholder {
+    color: color-mix(in oklab, currentColor 45%, transparent);
+  }
+  :where(main, footer) form :where(input:not([type="checkbox"]):not([type="radio"]), textarea, select):focus {
+    background-color: transparent;
+    border-color: var(--color-forest);
+    outline: none;
+    --tw-ring-shadow: 0 0 #0000;
+  }
+  :where(main, footer) form label:has(input[type="checkbox"]) {
+    background-color: color-mix(in oklab, var(--color-shell) 65%, transparent);
+    border-color: var(--color-line);
+    color: currentColor;
+  }
+
+  /* Admin interface is strictly isolated from the site theme */
   .admin-ui {
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
     font-size: 14px;
@@ -158,10 +338,13 @@
     letter-spacing: normal;
   }
   .admin-ui :focus-visible { outline-color: #059669; }
+  .admin-ui [aria-label="Button preview"] > div:last-child {
+    --color-ivory: var(--fg-on-dark);
+    --color-ink: var(--fg-on-light);
+  }
 
   /* ── Data display: lists, menus and comparison tables ───────────────── */
 
-  /* Hairline that grows in the accent colour on hover/focus — used on list rows. */
   .row-rail {
     position: relative;
   }
@@ -170,15 +353,26 @@
     position: absolute;
     inset-inline: 0;
     top: -1px;
-    height: 2px;
+    height: 1px;
     width: 0;
-    background: currentColor;
-    transition: width 0.55s var(--ease-soft);
+    background: var(--color-forest);
+    transition: width 0.7s var(--ease-expo);
   }
   .row-rail:hover::after,
   .row-rail:focus-within::after { width: 100%; }
 
-  /* Dotted leader between a name and its price. */
+  /* Scroll-scrubbed headline fill (Closing CTA) — --fill-p 0..1 driven by GSAP */
+  .scrub-fill-text {
+    --fill-p: 0;
+    background-image: linear-gradient(to right, var(--color-ivory) calc(var(--fill-p) * 100%), color-mix(in oklab, var(--color-ivory) 28%, transparent) calc(var(--fill-p) * 100%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* Expedition cursor & intro start hidden; GSAP reveals them (no-JS / reduced-motion safe) */
+  .expedition-cursor { opacity: 0; }
+  .expedition-intro { opacity: 0; pointer-events: none; }
+
   .leader {
     flex: 1 1 auto;
     min-width: 1.5rem;
@@ -187,12 +381,11 @@
     opacity: 0.35;
   }
 
-  /* Accordion body reveal (native <details>, so find-in-page still works). */
-  details[open] > .acc-body { animation: acc-open 0.38s var(--ease-soft) both; }
+  details[open] > .acc-body { animation: acc-open 0.42s var(--ease-soft) both; }
 
   .tnum { font-variant-numeric: tabular-nums; }
 
-  /* WhatsApp-style chat wallpaper */
+  /* WhatsApp-style chat wallpaper (AgentWidget) */
   .wa-bg {
     background-color: #efe7dd;
     background-image: radial-gradient(rgb(84 60 40 / 0.07) 1px, transparent 1.2px);
@@ -201,15 +394,15 @@
   .typing-dot { animation: typing 1.2s infinite ease-in-out; }
 }
 
-/* Scroll reveals are driven by IntersectionObserver (see components/motion.tsx),
-   so they work in every browser and never leave content hidden. */
 html.no-anim .animate-hero-in,
 html.no-anim .animate-fade-up,
 html.no-anim details[open] > .acc-body { animation: none; }
 html.no-anim .row-rail::after { transition: none; }
+html.no-anim .film-grain { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .film-grain { display: none; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
@@ -219,3 +412,10 @@ html.no-anim .row-rail::after { transition: none; }
 
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Light mode: keep daytime backgrounds bright (no atmospheric darkening) */
+html[data-site-mode="light"] {
+  --atmo-bg: var(--color-ivory);
+  --atmo-surface: var(--color-shell);
+  --atmo-glow: color-mix(in oklab, var(--color-bark) 22%, transparent);
+}
